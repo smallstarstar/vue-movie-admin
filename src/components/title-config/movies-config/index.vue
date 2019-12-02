@@ -127,7 +127,7 @@ export default class MovicesConfig extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .container_top {
   display: flex;
   flex: 1;
@@ -137,5 +137,8 @@ export default class MovicesConfig extends Vue {
 }
 .table {
   height: 400px;
+  /deep/ .el-tooltip__popper {
+    width: 200px;
+  }
 }
 </style>
