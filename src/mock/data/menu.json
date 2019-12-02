@@ -1,0 +1,19 @@
+{
+    "menu":[
+        {
+            "routerName":"首页",
+            "path":"/home/homecontent",
+            "index":1
+        },
+        {
+            "routerName":"列表",
+            "path":"/home/homelist",
+            "index":2
+        },
+        {
+            "routerName":"配置",
+            "path":"/home/systemConfig",
+            "index":3  
+        }
+    ]
+}
