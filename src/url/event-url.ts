@@ -18,7 +18,7 @@ export const EventInfoUrl =  {
     saveMovicesInfo: '/api/v1/saveMovice',
 
     // 根据类型id获取电影的信息
-    getMovicesInfoByTitleId: '/api/v1/getMovicesByTitleId',
+    getMovicesByTitleIdAndPageAndSize: '/api/v1/getMovicesByTitleIdAndPageAndSize',
 
     // 根据标题的id删除标题的名称
     deleteTitleById: '/api/v1/delteTitleById',

@@ -55,10 +55,10 @@ const eventInfoServices = {
         const url = BaseUrl + EventInfoUrl.saveMovicesInfo;
         return await axios.post(url, movicesInfo)
     },
-    // 根据电影种类获取电影信息
-    async getMovicesInfoByTitleId(titleId: string) {
-        const url = BaseUrl + EventInfoUrl.getMovicesInfoByTitleId + '?id=' + titleId;
-        return await axios.get(url);
+    // 根据电影种类获取电影信息(包含分页)
+    async getMovicesByTitleIdAndPageAndSize(pageInfo: any) {
+        const url = BaseUrl + EventInfoUrl.getMovicesByTitleIdAndPageAndSize;
+        return await axios.post(url, pageInfo);
     },
 
     // 根据标题的id删除标题的名称

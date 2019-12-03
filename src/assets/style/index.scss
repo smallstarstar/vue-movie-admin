@@ -44,34 +44,27 @@ a {
 
     margin: 0 auto;
 
-
-
-}
-
-.test-1::-webkit-scrollbar {
-    /*滚动条整体样式*/
-
-    width: 10px;
-    /*高宽分别对应横竖滚动条的尺寸*/
-
-    height: 1px;
+    
 
 }
 
-.test-1::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-
+div::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    /**/
+  }
+  div::-webkit-scrollbar-track {
+    background: rgb(239, 239, 239);
+    // background-color: #f2784b;;
+    border-radius: 2px;
+  }
+  div::-webkit-scrollbar-thumb {
+    background: #f2784b;
     border-radius: 10px;
-
-    background: #535353;
-
-}
-
-.test-1::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-
-    border-radius: 10px;
-
-    background: #EDEDED;
-
-}
+  }
+  div::-webkit-scrollbar-thumb:hover {
+    background: #333;
+  }
+  div::-webkit-scrollbar-corner {
+    background: #179a16;
+  }

@@ -38,14 +38,27 @@
           </el-col>
         </el-row>
         <el-row :gutter="24">
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="价格">
               <el-input placeholder="请输入" v-model="movicesInfo.m_price"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="评分">
               <el-input placeholder="请输入" v-model="movicesInfo.m_evenation"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="是否轮播">
+              <el-switch
+                style="display: block"
+                v-model="slides"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-text="是"
+                inactive-text="否"
+                @change="switchButtoon($event)"
+              ></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
@@ -98,6 +111,7 @@ import ValidatorRules from "@/utils/validator-rules";
 export default class AddMovices extends Vue {
   private value: string = "";
   private dialogVisible: boolean = false;
+  private slides: boolean = false;
   private optionsList: any = [];
   private movicesInfo: any = {};
   async mounted() {
@@ -133,6 +147,7 @@ export default class AddMovices extends Vue {
   }
   handleRemove() {}
   async submit() {
+    this.movicesInfo.m_swaper = this.slides;
     const data = await eventInfoServices.addMovicesInfo(this.movicesInfo);
     if (data) {
       (this.$refs.upload as any).clearFiles();
@@ -146,7 +161,17 @@ export default class AddMovices extends Vue {
       this.$emit("refreshDataList", this.movicesInfo.titleName);
       this.movicesInfo = {};
       this.dialogVisible = false;
+      this.slides = false;
     }
+  }
+  switchButtoon(e: boolean) {
+    this.slides = e;
   }
 }
 </script>
+
+<style lang="scss" scoped>
+/deep/ .el-switch {
+  margin-top: 45px;
+}
+</style>
