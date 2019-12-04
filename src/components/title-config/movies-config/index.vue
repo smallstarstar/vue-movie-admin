@@ -110,7 +110,7 @@ export default class MovicesConfig extends Vue {
     this.optionsList.forEach(async (element: any) => {
       if (e === element.titleName) {
         this.titleId = element._id;
-        await this.getInit(element._id);
+        await this.getInit(element._id);  
       }
     });
   }

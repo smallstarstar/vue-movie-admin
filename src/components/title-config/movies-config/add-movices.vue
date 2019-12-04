@@ -106,6 +106,7 @@ import { Component, Vue } from "vue-property-decorator";
 import eventInfoServices from "@/api/eventInfoServices";
 import { ValidatorName } from "@/common/enums/validator-name";
 import ValidatorRules from "@/utils/validator-rules";
+import utilServices from '@/utils/utils-services';
 
 @Component({ components: {} })
 export default class AddMovices extends Vue {
@@ -135,15 +136,10 @@ export default class AddMovices extends Vue {
     this.movicesInfo = {};
     (this.$refs.upload as any).clearFiles();
   }
-  changeImg(file: any) {
-    const files = [];
-    files.push(file.raw);
-    const render = new FileReader();
-    render.readAsDataURL(file.raw);
-    render.onload = (e: any) => {
-      const dataImg = e.target.result;
-      this.movicesInfo.m_img = dataImg;
-    };
+ async changeImg(file: any) {
+    // 压缩图片上传
+    const base64Img = await utilServices.compressionImg(file);
+    this.movicesInfo.m_img = base64Img;
   }
   handleRemove() {}
   async submit() {
