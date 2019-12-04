@@ -11,7 +11,7 @@
         <el-tab-pane label="电影管理" name="second">
             <MovicesConfig />
         </el-tab-pane>
-        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+        <el-tab-pane label="影院地址" name="third">影院地址</el-tab-pane>
         <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
       </el-tabs>
     </div>
