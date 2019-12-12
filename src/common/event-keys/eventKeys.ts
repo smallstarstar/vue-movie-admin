@@ -1,4 +1,6 @@
 const EventKeys = {
+    // 服务错误
+    SERVICES_ERROR: 'services_error',
     // 参数400
     PARMAS_ERROR_MESSAGE: 'parmas_error_message',
 
@@ -18,7 +20,9 @@ const EventKeys = {
     REFRESHTIMESHEET: 'refresh_timeSheet',
 
     // 通知刷新标题组件
-    REFRESHTITLEEVENT: 'refresh_title_event'
+    REFRESHTITLEEVENT: 'refresh_title_event',
+    // 权限不够
+    INSUFFCIENTAUTHORITY: 'Insuffcident_Authority'
 }
 
 export default EventKeys;

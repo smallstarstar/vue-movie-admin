@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import NProgress from 'nprogress' // nprogress插件
+import 'nprogress/nprogress.css' // nprogress样式
+
 
 Vue.use(VueRouter)
 
@@ -119,12 +122,17 @@ const router: any = new VueRouter({
  */
 
 router.beforeEach((to: any, from: any, next: any) => {
+  NProgress.start();
   const token = localStorage.getItem('token') ? true : false;
   if (to.path === '/') {
     next();
   } else {
     token ? next() : next('/');
   }
+});
+
+router.afterEach(()=>{
+  NProgress.done();
 })
 
 export default router

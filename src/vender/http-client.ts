@@ -4,20 +4,31 @@ import router from '../router';
 import EventKeys from '../common/event-keys/eventKeys';
 import rxEvent from 'pubsub-js';
 import { ResponseCode } from '@/common/enums/response-code';
-
+import NProgress from 'nprogress' // nprogress插件
+import 'nprogress/nprogress.css' // nprogress样式
 
 /**
  * 请求相应拦截
  */
 
 axios.interceptors.response.use((res: any) => {
+    NProgress.done();
     return res.data;
 }, (error: any) => {
+    // 服务错误
+    if (error.response === undefined) {
+        rxEvent.publish(EventKeys.SERVICES_ERROR, true);
+    }
     if (error.response.status === 400) {
         rxEvent.publish(EventKeys.PARMAS_ERROR_MESSAGE, true);
     }
-    if(error.response.status === 500) {
+    if (error.response.status === 500) {
         rxEvent.publish(EventKeys.SERVICES_ERROR_MESSAGE, true);
+    }
+    // 权限不够
+    if (error.response.status === 401) {
+        rxEvent.publish(EventKeys.INSUFFCIENTAUTHORITY, true);
+        NProgress.done();
     }
     if (error.response.status === 404) {
         // 资源未找到(请求路径错误)
@@ -26,6 +37,7 @@ axios.interceptors.response.use((res: any) => {
         //     path: '*'
         // })
     }
+
 });
 
 /**
@@ -40,5 +52,6 @@ axios.interceptors.request.use((config: any) => {
         config.data = qs.stringify(data);
         // console.log(config.data, '========================');
     }
+    NProgress.start();
     return config;
 })

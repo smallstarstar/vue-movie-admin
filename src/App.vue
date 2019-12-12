@@ -13,5 +13,9 @@ export default class App extends Vue {}
 
 <style lang="scss">
 @import "./assets/style/index.scss";
+// #nprogress .bar {
+//   background: #f2784b !important;
+//   height: 2px !important;
+// }
 </style>
 

@@ -55,14 +55,24 @@ export default class HeaderComponent extends Vue {
       this.$message.error("参数错误");
     });
     // 内部服务器错误
-    rxEvent.subscribe(EventKeys.SERVICES_ERROR_MESSAGE, (name: any, val: any) => {
-        this.$message.error('服务错误');
+    rxEvent.subscribe(
+      EventKeys.SERVICES_ERROR_MESSAGE,
+      (name: any, val: any) => {
+        this.$message.error("服务错误");
       }
     );
+    // 内部服务器错误
+    rxEvent.subscribe(EventKeys.SERVICES_ERROR, (name: any, val: any) => {
+      this.$message.error("服务错误");
+    });
     // 请求路径错误
     rxEvent.subscribe(EventKeys.REQUEST_ERROR_WAY, (name: any, val: any) => {
-      this.$message.error('请求路径错误');
-    })
+      this.$message.error("请求路径错误");
+    });
+    // 权限不够
+    rxEvent.subscribe(EventKeys.INSUFFCIENTAUTHORITY, (name: any, val: any) => {
+      this.$message.error("用户权限不够");
+    });
     rxEvent.subscribe(EventKeys.DISABLE_MENU_COLOR, (name: any, val: any) => {
       if (val) {
         this.menuBar.forEach((element: any) => {

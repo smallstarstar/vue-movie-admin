@@ -31,15 +31,17 @@ const utilServices = {
                 break;
         }
     },
-
+    // 角色转化
     getRoleInfo(code: number) {
         switch (code) {
+            case RoleCode.SUPER_MANAGER:
+                return '超级管理员'
             case RoleCode.ROLE_MANAGER:
                 return '管理员';
             case RoleCode.ROLE_CUSTOMER:
                 return '普通员工';
-            case RoleCode.ROLE_REVIEW:
-                return '待审员工';
+            case RoleCode.ROLE_VIP:
+                return 'VIP';
             default:
                 break;
         }
@@ -124,7 +126,7 @@ const utilServices = {
                     /*canvas.toDataURL(mimeType, qualityArgument),mimeType 默认值是'image/png';
                      * qualityArgument表示导出的图片质量，只有导出为jpeg和webp格式的时候此参数才有效，默认值是0.92*/
                     const newUrl = canvas.toDataURL('image/jpeg', 0.92);//base64 格式
-                    return reslove(newUrl); 
+                    return reslove(newUrl);
                     //也可以把压缩后的图片转blob格式用于上传
                     // canvas.toBlob((blob)=>{
                     //     console.log(blob)
