@@ -13,7 +13,7 @@
           <el-input placeholder="请输入..." v-model="userRegisterInfo.userName"></el-input>
         </el-form-item>
         <el-form-item label="密码" :prop="validatorName.password">
-          <el-input placeholder="请输入..." v-model="userRegisterInfo.password"></el-input>
+          <el-input placeholder="请输入..." v-model="userRegisterInfo.password" type="password"></el-input>
         </el-form-item>
         <el-form-item label="角色" :prop="validatorName.userRole">
           <el-input placeholder="请输入..." v-model="userRegisterInfo.userRole"></el-input>
@@ -49,9 +49,6 @@ export default class Register extends Vue {
   }
   cancel(userRegisterInfo: any) {
     this.dialogVisible = false;
-    this.userRegisterInfo.userName = "";
-    this.userRegisterInfo.password = "";
-    this.userRegisterInfo.userRole = "";
     (this.$refs[userRegisterInfo] as any).resetFields();
   }
   submit(userRegisterInfo: any) {
@@ -59,10 +56,20 @@ export default class Register extends Vue {
       if (!valid) {
         return;
       } else {
-        const data = await userLoginServices.UserRegisterInfo(
+        const data: any = await userLoginServices.UserRegisterInfo(
           this.userRegisterInfo
         );
-        this.dialogVisible = false;
+        if (data.code === 4) {
+          this.dialogVisible = false;
+          (this.$refs[userRegisterInfo] as any).resetFields();
+          const message: any = {
+            message: "用户注册成功,请登录",
+            type: "success",
+            duration: 3000,
+            position: "bottom-right"
+          };
+          this.$notify(message);
+        }
       }
     });
   }

@@ -2,13 +2,13 @@ export const EventInfoUrl =  {
     // 保存事件信息
     saveEvent: '/api/v1/saveEvent',
     // 分页获取事件信息
-    getEventInfoByPage: '/api/v1/getEventByPage/{page}/{size}',
+    getEventInfoByPage: '/api/v1/getEventByPageAndSize',
     // 添加事件处置的详细信息
-    addDetailInfo: '/api/v1/saveDetail',
+    addDetailInfo: '/api/v1/addEventthingByEventId',
     // 获取事件的处置详细信息集合
-    getListDetailInfo: '/api/v1/getListInfo/{eventId}',
+    getListDetailInfo: '/api/v1/getDetailByEventId',
     // 根据事件的id获取事件的时间轴信息
-    getTimeSheetInfoByEventId: '/api/v1/getTimeSheetInfoByEventId/{id}',
+    getTimeSheetInfoByEventId: '/api/v1/timeSheetInfoByEventId',
     // 保存标题的信息
     saveTitle: '/api/v1/saveTitle',
     // 获取标题信息的集合

@@ -64,10 +64,10 @@ const utilServices = {
     // 时间轴词条的转化
     changeTimeSheetKeys(messageKey: string) {
         if (messageKey === TimeSheetKey.SAVEEVENTMESSAGE) {
-            return timeSheetKey.TimeSheet.saveEventInfoMessage;
+            return timeSheetKey.TimeSheet.saveEventInfo;
         }
         if (messageKey === TimeSheetKey.ADDDETAILINFOMESSAGE) {
-            return timeSheetKey.TimeSheet.addDetailInfoMessage;
+            return timeSheetKey.TimeSheet.addDetailInfo;
         }
     },
 

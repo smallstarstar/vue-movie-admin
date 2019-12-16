@@ -4,6 +4,5 @@ export class AddDetailInfo {
     perId?: string;
     personal?: string;
     time?: string;
-    role?: number;
-
+    roleId?: number;
 }

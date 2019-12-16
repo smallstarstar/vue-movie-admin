@@ -1,7 +1,7 @@
 export enum TimeSheetKey {
     // 填写事件信息
-    SAVEEVENTMESSAGE = 'saveEventInfoMessage',
+    SAVEEVENTMESSAGE = 'saveEventInfo',
 
     // 添加备注信息
-    ADDDETAILINFOMESSAGE = 'addDetailInfoMessage'
+    ADDDETAILINFOMESSAGE = 'saveDetailInfo'
 }

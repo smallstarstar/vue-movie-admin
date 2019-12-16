@@ -12,11 +12,11 @@
           :timestamp="activity.timestamp"
         >
         <div class="timeshow">
-           {{timeFormat.changeStateTime(activity.cTime)}}
+           {{activity.time}}
         </div>
-        {{utilServices.getRoleInfo(activity.role)}}
+        {{utilServices.getRoleInfo(+activity.roleId)}}
         <span class="perosonal">{{activity.personal}}</span>
-        {{utilServices.changeTimeSheetKeys(activity.messagekey)}}
+        {{utilServices.changeTimeSheetKeys(activity.messageKey)}}
         </el-timeline-item>
       </el-timeline>
     </div>
@@ -43,11 +43,11 @@ export default class TimeSheet extends Vue {
   private timeFormat: any = timeFormat;
   private timeSheetInfo: any = [];
   async mounted() {
-    await this.getInitData(this.eventInfo.id);
+    await this.getInitData(this.eventInfo._id);
     this.scroller();
     // 刷新时间轴
     rxevent.subscribe(EventKeys.REFRESHTIMESHEET, async (name: any, val: any) =>{
-      await this.getInitData(this.eventInfo.id);
+      await this.getInitData(this.eventInfo._id);
       this.scroller();
     });
   }

@@ -16,7 +16,7 @@
         </el-col>
         <el-col :span="6">
           <div>时间</div>
-          <div class="name">{{ timeChange.changeStateTime(eventInfo.cTime)}}</div>
+          <div class="name">{{ eventInfo.time}}</div>
         </el-col>
         <el-col :span="6">
           <div>等级</div>

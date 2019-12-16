@@ -44,12 +44,6 @@ export default class HeaderComponent extends Vue {
     this.interval = setInterval(() => {
       this.now = timeFormat.getCurrentTime();
     }, 1000);
-    const data = await textServices.getMenu();
-    this.menuBar = data;
-    this.menuBar.forEach((element: any) => {
-      element.color = false;
-    });
-
     // 参数请求错误400
     rxEvent.subscribe(EventKeys.PARMAS_ERROR_MESSAGE, (name: any, val: any) => {
       this.$message.error("参数错误");
@@ -79,6 +73,11 @@ export default class HeaderComponent extends Vue {
           element.color = false;
         });
       }
+    });
+    const data = await textServices.getMenu();
+    this.menuBar = data;
+    this.menuBar.forEach((element: any) => {
+      element.color = false;
     });
   }
 

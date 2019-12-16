@@ -5,7 +5,7 @@ export enum ValidatorName {
     name = 'name',
     level = 'level',
     address = 'address',
-    time = 'time',
+    typeName = 'typeName',
     desc = 'desc',
     resourceName = 'resourceName',
     resourceSubName = 'resourceSubName',

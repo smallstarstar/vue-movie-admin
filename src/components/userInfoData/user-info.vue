@@ -28,16 +28,41 @@
       </el-table-column>
       <el-table-column label="角色" width="180">
         <template slot-scope="scope">
-          <span  :class="{superRole:scope.row.userRole === '0'}">{{ utilServices.getRoleInfo(+scope.row.userRole) }}</span>
+          <span
+            :class="{superRole:scope.row.userRole === '0'}"
+          >{{ utilServices.getRoleInfo(+scope.row.userRole) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope" width="200">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="changeRole(scope.row)"
+            v-if="+scope.row.userRole > 0"
+          >角色变更</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <div class="pageSize">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="currentSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalList"
+      ></el-pagination>
+    </div>
+    <!-- 角色改变的弹窗 -->
+    <RoleChange
+      :openRoleChange="openRoleChange"
+      :chooseUserInfo="chooseUserInfo"
+      @closeDialog="closeDialog"
+    />
   </div>
 </template>
 
@@ -47,17 +72,25 @@ import userLoginServices from "@/api/userLoginServices";
 import { PageInfo } from "@/models/page-info";
 import { Getter } from "vuex-class";
 import utilServices from "@/utils/utils-services";
+import RoleChange from "./role-change.vue";
 
-@Component({ components: {} })
+@Component({
+  components: {
+    RoleChange
+  }
+})
 export default class UserInfoDate extends Vue {
   @Getter("userInfo")
   userInfo: any;
-  private utilServices: any  = utilServices;
+  private utilServices: any = utilServices;
   private userInfoData: any = [];
   private loading: any = true;
+  private totalList: number = 0;
   private pageInfo: PageInfo = new PageInfo();
   private currentPage: number = 1;
   private currentSize: number = 5;
+  private openRoleChange: boolean = false;
+  private chooseUserInfo: any = {};
   async created() {
     await this.getInit();
   }
@@ -68,10 +101,20 @@ export default class UserInfoDate extends Vue {
     );
     if (result) {
       this.userInfoData = result.result;
+      this.totalList = result.total;
       this.loading = false;
     }
   }
-  async handleDelete(e: any) {
+  handleSizeChange() {}
+  handleCurrentChange() {}
+  changeRole(e: any) {
+    this.openRoleChange = true;
+    this.chooseUserInfo = e;
+  }
+  closeDialog() {
+    this.openRoleChange = false;
+  }
+  handleDelete(e: any) {
     if (this.userInfo.userRole === e.userRole.toString()) {
       // 说明是平级不可以删除
       const message: any = {
@@ -82,20 +125,28 @@ export default class UserInfoDate extends Vue {
       };
       this.$notify(message);
     } else {
-      const result = await userLoginServices.deleteUserInfoByUserId(
-        e._id,
-        this.userInfo.userRole
-      );
-      if (result) {
-        await this.getInit();
-        const message: any = {
-          message: "删除成功",
-          type: "success",
-          duration: 3000,
-          position: "bottom-right"
-        };
-        this.$notify(message);
-      }
+      this.$confirm("是否删除该人员?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          const result = await userLoginServices.deleteUserInfoByUserId(
+            e._id,
+            this.userInfo.userRole
+          );
+          if (result) {
+            await this.getInit();
+            const message: any = {
+              message: "删除成功",
+              type: "success",
+              duration: 3000,
+              position: "bottom-right"
+            };
+            this.$notify(message);
+          }
+        })
+        .catch(() => {});
     }
   }
 }

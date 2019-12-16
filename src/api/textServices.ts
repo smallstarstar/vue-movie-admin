@@ -3,9 +3,9 @@ import routerForword from '@/url/text';
 
 
 const textServices = {
-    getMenu() {
+    async getMenu() {
         const url = routerForword.getMenu;
-        return axios.get(url);
+        return await axios.get(url);
     },
     getUserInfo() {
         const url = routerForword.getUserInfo;

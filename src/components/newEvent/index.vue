@@ -14,7 +14,7 @@
       :visible.sync="dialogVisible"
       width="60%"
       :show-close="false"
-      :before-close="handleClose" 
+      :before-close="handleClose"
     >
       <el-form :model="eventInfo" ref="eventInfo" :rules="validatorRules">
         <el-row :gutter="24">
@@ -24,13 +24,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="类型" :prop="validatorName.subName">
-              <el-input placeholder="请输入..." v-model="eventInfo.subName"></el-input>
+            <el-form-item label="类型" :prop="validatorName.typeName">
+              <el-input placeholder="请输入..." v-model="eventInfo.typeName"></el-input>
             </el-form-item>
           </el-col>
+
           <el-col :span="8">
-            <el-form-item label="等级" :prop="validatorName.level">
-              <el-input placeholder="请输入..." v-model="eventInfo.level"></el-input>
+            <el-form-item label="子类型" :prop="validatorName.subName">
+              <el-input placeholder="请输入..." v-model="eventInfo.subName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -41,8 +42,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="时间" :prop="validatorName.time">
-              <el-date-picker v-model="eventInfo.time" type="datetime" placeholder="选择日期"></el-date-picker>
+            <el-form-item label="等级" :prop="validatorName.level">
+              <el-input placeholder="请输入..." v-model="eventInfo.level"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -57,7 +58,7 @@
         </el-form-item>
         <el-form-item>
           <el-button @click="cancel('eventInfo')">取 消</el-button>
-          <el-button type="primary" @click="submit('eventInfo')">确 定</el-button>
+          <el-button type="primary" @click="submit('eventInfo')">提 交</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -69,21 +70,22 @@ import { Component, Vue } from "vue-property-decorator";
 import { EventInfo } from "@/models/event-info";
 import { ValidatorName } from "@/common/enums/validator-name";
 import ValidatorRules from "@/utils/validator-rules";
-import eventInfoServices from '@/api/eventInfoServices';
-import rxevent from 'pubsub-js';
-import EventKeys from '@/common/event-keys/eventKeys';
-import { Getter } from 'vuex-class';
-
+import eventInfoServices from "@/api/eventInfoServices";
+import rxevent from "pubsub-js";
+import EventKeys from "@/common/event-keys/eventKeys";
+import { Getter } from "vuex-class";
+import timeFormat from "@/utils/timeFormat";
 
 @Component({
   components: {}
 })
 export default class NewEvent extends Vue {
-  @Getter('userInfo')
+  @Getter("userInfo")
   userInfo!: any;
   private showLight: boolean = false;
   private dialogVisible: boolean = false;
   private eventInfo: EventInfo = new EventInfo();
+  private now: any = timeFormat;
   private validatorName: any = ValidatorName;
   private validatorRules: any = ValidatorRules;
 
@@ -97,24 +99,26 @@ export default class NewEvent extends Vue {
     (this.$refs[eventInfo] as any).resetFields();
   }
   submit(eventInfo: any) {
-    (this.$refs[eventInfo] as any).validate( async (valid: any) => {
+    (this.$refs[eventInfo] as any).validate(async (valid: any) => {
       if (!valid) {
         return;
       } else {
-        this.eventInfo.disposalStatus = 0;
+        this.eventInfo.time = this.now.getCurrentTime();
         this.eventInfo.personal = this.userInfo.userName;
-        this.eventInfo.role = this.userInfo.role;
+        this.eventInfo.role = +this.userInfo.userRole;
+        this.eventInfo.perId = this.userInfo._id;
         const result = await eventInfoServices.saveEventInfo(this.eventInfo);
-        if(result) {
-        this.dialogVisible = false;
-        this.showLight = false;
-        rxevent.publish(EventKeys.REFRESH_GETDATE, true);
-        const messageInfo: any = {
-          type: 'success',
-          position: 'bottpm-right',
-          message: '添加事件成功'
-        }
-        this.$notify(messageInfo);
+        if (result) {
+          (this.$refs[eventInfo] as any).resetFields();
+          this.dialogVisible = false;
+          this.showLight = false;
+          rxevent.publish(EventKeys.REFRESH_GETDATE, true);
+          const messageInfo: any = {
+            type: "success",
+            position: "bottpm-right",
+            message: "添加事件成功"
+          };
+          this.$notify(messageInfo);
         }
       }
     });
@@ -145,5 +149,9 @@ export default class NewEvent extends Vue {
 /deep/ .el-dialog__title {
   font-size: 23px;
   font-weight: 700;
+}
+.timeChoose {
+  margin-top: 40px;
+  margin-left: -50px;
 }
 </style>

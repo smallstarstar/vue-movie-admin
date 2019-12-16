@@ -5,20 +5,20 @@ export class EventInfo {
 
     subName?: string;
 
-    type?: string;
+    typeName?: string;
 
     level?: string;
 
     address?: string;
 
-    time?: Date;
+    time?: string;
 
     desc?: string;
 
-    disposalStatus?: number;
-
     personal?: string;
-    
+
+    perId?: string;
+
     role?: number;
 
 }

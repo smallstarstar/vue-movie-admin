@@ -3,8 +3,8 @@
     <!-- 待审的商品列表 -->
     <el-table :data="tableData" style="width: 100%" class="table" v-loading="loading">
       <el-table-column label="名称" width="120" show-overflow-tooltip>
-        <template slot-scope="scope" >
-          <span >{{ scope.row.name }}</span>
+        <template slot-scope="scope">
+          <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="类型" width="120">
@@ -23,7 +23,7 @@
 
       <el-table-column label="时间" width="200">
         <template slot-scope="scope">
-          <span>{{ timeChange.changeStateTime(scope.row.cTime) }}</span>
+          <span>{{ scope.row.time }}</span>
         </template>
       </el-table-column>
 
@@ -44,11 +44,12 @@
           <el-button size="mini" type="warning" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
           <el-button size="mini" type="danger" @click="handleEdit(scope.$index, scope.row)">驳回</el-button>
           <el-button size="mini" type="info" @click="handleEdit(scope.$index, scope.row)">审批</el-button>
-          <el-button 
-          size="mini" 
-          type="primary"
-           @click="getInfoDisposal(scope.row)" 
-           v-if="scope.row.disposalStatus !== DisposalStatus.NotDisposal">进入</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="getInfoDisposal(scope.row)"
+            v-if="scope.row.disposalStatus !== DisposalStatus.NotDisposal"
+          >进入</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -73,8 +74,9 @@ import timeFormat from "@/utils/timeFormat";
 import { Action } from "vuex-class";
 import rxevent from "pubsub-js";
 import EventKeys from "@/common/event-keys/eventKeys";
-import { EventStatus } from '@/common/enums/event-status';
-import utilServices from '@/utils/utils-services';
+import { EventStatus } from "@/common/enums/event-status";
+import utilServices from "@/utils/utils-services";
+import { PageInfo } from "@/models/page-info";
 
 @Component({
   components: {}
@@ -83,6 +85,7 @@ export default class ShopInfoData extends Vue {
   @Action("saveEventInfo")
   saveEventInfo!: any;
   private tableData: Array<[]> = [];
+  private pageInfo: PageInfo = new PageInfo();
   private page: number = 1;
   private current: number = 7;
   private total: number = 0;
@@ -92,12 +95,12 @@ export default class ShopInfoData extends Vue {
   private utilServices: any = utilServices;
 
   async mounted() {
-    await this.getInit(this.page, this.current);
+    await this.getInit();
     rxevent.subscribe(
       EventKeys.REFRESH_GETDATE,
       async (name: any, data: any) => {
         if (data) {
-          await this.getInit(this.page, this.current);
+          await this.getInit();
         }
       }
     );
@@ -117,16 +120,15 @@ export default class ShopInfoData extends Vue {
   }
 
   // 获取数据
-  async getInit(page: number, current: number) {
+  async getInit() {
     this.loading = true;
     const result: any = await eventInfoServices.getEventInfoByPage(
-      page,
-      current
+      this.pageInfo
     );
     if (result) {
       this.loading = false;
-      this.tableData = result.content;
-      this.total = result.totalElements;
+      this.tableData = result.result;
+      this.total = result.total;
     }
   }
 }

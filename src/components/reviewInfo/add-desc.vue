@@ -33,7 +33,6 @@ import { AddDetailInfo } from "@/models/add-detail-info";
 import rxevent from "pubsub-js";
 import EventKeys from "@/common/event-keys/eventKeys";
 
-
 @Component({ components: {} })
 export default class AddDesc extends Vue {
   @Getter("userInfo")
@@ -46,7 +45,7 @@ export default class AddDesc extends Vue {
   private detailList: any = [];
   private loading: boolean = false;
   async mounted() {
-    await this.getListDetailInfo(this.eventInfo.id);
+    await this.getListDetailInfo(this.eventInfo._id);
     this.scroller();
   }
   @Watch("addDesc")
@@ -70,11 +69,11 @@ export default class AddDesc extends Vue {
     // 组装数据
     const addDetailInfo = new AddDetailInfo();
     addDetailInfo.detail = this.addDesc.trim();
-    addDetailInfo.perId = this.userInfo.id;
+    addDetailInfo.perId = this.userInfo._id;
     addDetailInfo.personal = this.userInfo.userName;
-    addDetailInfo.role = this.userInfo.role;
+    addDetailInfo.roleId = +this.userInfo.userRole;
     addDetailInfo.time = this.timeFormat.getCurrentTime();
-    addDetailInfo.eventId = this.eventInfo.id;
+    addDetailInfo.eventId = this.eventInfo._id;
     this.loading = true;
     const result = await eventInfoServices.addDetailInfo(addDetailInfo);
     if (result) {
@@ -84,7 +83,7 @@ export default class AddDesc extends Vue {
         message: "添加备注信息成功",
         position: "bottom-right"
       };
-      await this.getListDetailInfo(this.eventInfo.id);
+      await this.getListDetailInfo(this.eventInfo._id);
       // 刷新时间轴数据
       rxevent.publish(EventKeys.REFRESHTIMESHEET, true);
       this.$notify(messageInfo);

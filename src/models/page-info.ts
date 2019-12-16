@@ -1,4 +1,4 @@
 export class PageInfo {
-    currentPage!: 1;
-    currentSize!: 5;
+    currentPage = 1;
+    currentSize = 7;
 }
