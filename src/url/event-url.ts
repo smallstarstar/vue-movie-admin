@@ -1,4 +1,4 @@
-export const EventInfoUrl =  {
+export const EventInfoUrl = {
     // 保存事件信息
     saveEvent: '/api/v1/saveEvent',
     // 分页获取事件信息
@@ -24,5 +24,7 @@ export const EventInfoUrl =  {
     deleteTitleById: '/api/v1/delteTitleById',
 
     // 根据电影的id删除电影
-    deleteMovicesInfoById: '/api/v1/delteMovicesInfoById'
+    deleteMovicesInfoById: '/api/v1/delteMovicesInfoById',
+    upDataUserRole: '/api/v1/upDataUserRole',
+    backEventInfo: '/api/v1/backEventInfo'
 }

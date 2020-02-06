@@ -35,7 +35,6 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope" width="200">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
           <el-button
             size="mini"
@@ -62,6 +61,7 @@
       :openRoleChange="openRoleChange"
       :chooseUserInfo="chooseUserInfo"
       @closeDialog="closeDialog"
+      @refresh="refresh"
     />
   </div>
 </template>
@@ -110,6 +110,9 @@ export default class UserInfoDate extends Vue {
   changeRole(e: any) {
     this.openRoleChange = true;
     this.chooseUserInfo = e;
+  }
+  async refresh() {
+    await this.getInit();
   }
   closeDialog() {
     this.openRoleChange = false;

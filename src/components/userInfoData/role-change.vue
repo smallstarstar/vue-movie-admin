@@ -41,9 +41,13 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import utilServices from "@/utils/utils-services";
 import configBase from "../../../public/config";
+import { Getter } from "vuex-class";
+import eventInfoServices from "../../api/eventInfoServices";
 
 @Component({})
 export default class RoleChange extends Vue {
+  @Getter("userInfo")
+  userInfo!: any;
   @Prop({ default: Boolean })
   openRoleChange: any;
   @Prop()
@@ -52,11 +56,21 @@ export default class RoleChange extends Vue {
   private roleIdArray: Number[] = configBase.roleId;
   private chooseRole: any = "";
   handleClose() {}
-  submit() {
+  async submit() {
     // 组装数据
     const changeInfo: any = {};
-    this.chooseRole = "";
-    this.$emit("closeDialog", true);
+    changeInfo.person = this.userInfo.userName;
+    changeInfo.perId = this.userInfo._id;
+    changeInfo.roleId = this.userInfo.userRole;
+    changeInfo.changeRoleId = this.chooseRole;
+    changeInfo.changePeoId = this.chooseUserInfo._id;
+    const result = await eventInfoServices.upDataUserRole(changeInfo);
+    console.log(result);
+    if (result) {
+      this.chooseRole = "";
+      this.$emit("closeDialog", true);
+      this.$emit('refresh', true);
+    }
   }
   cancel() {
     this.chooseRole = "";
@@ -88,11 +102,11 @@ export default class RoleChange extends Vue {
     margin-top: 10px;
   }
   .changeRole {
-      width: 100%;
-      padding: 10px;
-      /deep/ .el-radio {
-          margin-left: 10px;
-      }
+    width: 100%;
+    padding: 10px;
+    /deep/ .el-radio {
+      margin-left: 10px;
+    }
   }
 }
 </style>

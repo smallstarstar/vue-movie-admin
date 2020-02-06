@@ -73,6 +73,18 @@ const eventInfoServices = {
         return await axios.delete(url);
     },
 
+    // 更新用户角色信息
+    async upDataUserRole(changeInfo: any) {
+        const url = BaseUrl + EventInfoUrl.upDataUserRole;
+        return await axios.put(url, changeInfo);
+    },
+
+    // 驳回事务信息
+    async backEventInfo(evneInfo: any) {
+        const url = BaseUrl + EventInfoUrl.backEventInfo;
+        return await axios.put(url, evneInfo)
+    }
+
 }
 
 export default eventInfoServices;
